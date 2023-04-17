@@ -57,5 +57,13 @@ namespace diseño
                 panelMenu.Width = panelMenu.Width - 24;
             }
         }
+
+        private void btnClientes_Click(object sender, EventArgs e)
+        {
+            Clientes vClientes = new Clientes();
+            vClientes.TopLevel = false;
+            panelTrabajo.Controls.Add(vClientes);
+            vClientes.Show();
+        }
     }
 }

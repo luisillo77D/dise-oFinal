@@ -40,6 +40,7 @@ namespace diseño
             this.panel2 = new System.Windows.Forms.Panel();
             this.timer_Ocultar = new System.Windows.Forms.Timer(this.components);
             this.timer_Mostrar = new System.Windows.Forms.Timer(this.components);
+            this.panelTrabajo = new System.Windows.Forms.Panel();
             this.panelMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,7 +80,7 @@ namespace diseño
             this.btnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnReportes.Location = new System.Drawing.Point(3, 360);
             this.btnReportes.Name = "btnReportes";
-            this.btnReportes.Size = new System.Drawing.Size(141, 61);
+            this.btnReportes.Size = new System.Drawing.Size(138, 61);
             this.btnReportes.TabIndex = 3;
             this.btnReportes.Text = "Reportes";
             this.btnReportes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -94,7 +95,7 @@ namespace diseño
             this.btnFacturacion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnFacturacion.Location = new System.Drawing.Point(3, 262);
             this.btnFacturacion.Name = "btnFacturacion";
-            this.btnFacturacion.Size = new System.Drawing.Size(141, 61);
+            this.btnFacturacion.Size = new System.Drawing.Size(138, 61);
             this.btnFacturacion.TabIndex = 2;
             this.btnFacturacion.Text = "Facturacion";
             this.btnFacturacion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -109,7 +110,7 @@ namespace diseño
             this.btnVentas.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnVentas.Location = new System.Drawing.Point(3, 162);
             this.btnVentas.Name = "btnVentas";
-            this.btnVentas.Size = new System.Drawing.Size(141, 61);
+            this.btnVentas.Size = new System.Drawing.Size(138, 61);
             this.btnVentas.TabIndex = 1;
             this.btnVentas.Text = "Ventas";
             this.btnVentas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -124,11 +125,12 @@ namespace diseño
             this.btnClientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnClientes.Location = new System.Drawing.Point(3, 69);
             this.btnClientes.Name = "btnClientes";
-            this.btnClientes.Size = new System.Drawing.Size(141, 61);
+            this.btnClientes.Size = new System.Drawing.Size(138, 61);
             this.btnClientes.TabIndex = 0;
             this.btnClientes.Text = "Clientes";
             this.btnClientes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClientes.UseVisualStyleBackColor = true;
+            this.btnClientes.Click += new System.EventHandler(this.btnClientes_Click);
             // 
             // panel2
             // 
@@ -146,12 +148,21 @@ namespace diseño
             // 
             this.timer_Mostrar.Tick += new System.EventHandler(this.timer_Mostrar_Tick);
             // 
+            // panelTrabajo
+            // 
+            this.panelTrabajo.BackColor = System.Drawing.Color.Gainsboro;
+            this.panelTrabajo.Location = new System.Drawing.Point(147, 24);
+            this.panelTrabajo.Name = "panelTrabajo";
+            this.panelTrabajo.Size = new System.Drawing.Size(655, 426);
+            this.panelTrabajo.TabIndex = 2;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(161)))), ((int)(((byte)(229)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.panelTrabajo);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelMenu);
             this.Name = "Form1";
@@ -173,6 +184,7 @@ namespace diseño
         private System.Windows.Forms.Button btnClientes;
         private System.Windows.Forms.Timer timer_Ocultar;
         private System.Windows.Forms.Timer timer_Mostrar;
+        private System.Windows.Forms.Panel panelTrabajo;
     }
 }
 
