@@ -38,10 +38,14 @@ namespace diseño
             this.btnVentas = new System.Windows.Forms.Button();
             this.btnClientes = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblFecha = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.timer_Ocultar = new System.Windows.Forms.Timer(this.components);
             this.timer_Mostrar = new System.Windows.Forms.Timer(this.components);
             this.panelTrabajo = new System.Windows.Forms.Panel();
+            this.timer_Fecha = new System.Windows.Forms.Timer(this.components);
             this.panelMenu.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelMenu
@@ -52,7 +56,7 @@ namespace diseño
             this.panelMenu.Controls.Add(this.btnFacturacion);
             this.panelMenu.Controls.Add(this.btnVentas);
             this.panelMenu.Controls.Add(this.btnClientes);
-            this.panelMenu.Location = new System.Drawing.Point(0, 21);
+            this.panelMenu.Location = new System.Drawing.Point(-2, 57);
             this.panelMenu.Name = "panelMenu";
             this.panelMenu.Size = new System.Drawing.Size(144, 429);
             this.panelMenu.TabIndex = 0;
@@ -85,6 +89,7 @@ namespace diseño
             this.btnReportes.Text = "Reportes";
             this.btnReportes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnReportes.UseVisualStyleBackColor = true;
+            this.btnReportes.Click += new System.EventHandler(this.btnReportes_Click);
             // 
             // btnFacturacion
             // 
@@ -100,6 +105,7 @@ namespace diseño
             this.btnFacturacion.Text = "Facturacion";
             this.btnFacturacion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnFacturacion.UseVisualStyleBackColor = true;
+            this.btnFacturacion.Click += new System.EventHandler(this.btnFacturacion_Click);
             // 
             // btnVentas
             // 
@@ -115,6 +121,7 @@ namespace diseño
             this.btnVentas.Text = "Ventas";
             this.btnVentas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnVentas.UseVisualStyleBackColor = true;
+            this.btnVentas.Click += new System.EventHandler(this.btnVentas_Click);
             // 
             // btnClientes
             // 
@@ -135,10 +142,32 @@ namespace diseño
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(152)))), ((int)(((byte)(131)))), ((int)(((byte)(229)))));
+            this.panel2.Controls.Add(this.lblFecha);
+            this.panel2.Controls.Add(this.label2);
             this.panel2.Location = new System.Drawing.Point(0, -1);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(800, 24);
+            this.panel2.Size = new System.Drawing.Size(800, 55);
             this.panel2.TabIndex = 1;
+            // 
+            // lblFecha
+            // 
+            this.lblFecha.AutoSize = true;
+            this.lblFecha.Location = new System.Drawing.Point(12, 19);
+            this.lblFecha.Name = "lblFecha";
+            this.lblFecha.Size = new System.Drawing.Size(35, 13);
+            this.lblFecha.TabIndex = 6;
+            this.lblFecha.Text = "label2";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(761, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 25);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "X";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // timer_Ocultar
             // 
@@ -151,24 +180,32 @@ namespace diseño
             // panelTrabajo
             // 
             this.panelTrabajo.BackColor = System.Drawing.Color.Gainsboro;
-            this.panelTrabajo.Location = new System.Drawing.Point(147, 24);
+            this.panelTrabajo.Location = new System.Drawing.Point(145, 57);
             this.panelTrabajo.Name = "panelTrabajo";
-            this.panelTrabajo.Size = new System.Drawing.Size(655, 426);
+            this.panelTrabajo.Size = new System.Drawing.Size(655, 429);
             this.panelTrabajo.TabIndex = 2;
+            this.panelTrabajo.Paint += new System.Windows.Forms.PaintEventHandler(this.panelTrabajo_Paint);
+            // 
+            // timer_Fecha
+            // 
+            this.timer_Fecha.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(161)))), ((int)(((byte)(229)))));
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 487);
             this.Controls.Add(this.panelTrabajo);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panelMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panelMenu.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -185,6 +222,9 @@ namespace diseño
         private System.Windows.Forms.Timer timer_Ocultar;
         private System.Windows.Forms.Timer timer_Mostrar;
         private System.Windows.Forms.Panel panelTrabajo;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Timer timer_Fecha;
+        private System.Windows.Forms.Label lblFecha;
     }
 }
 
