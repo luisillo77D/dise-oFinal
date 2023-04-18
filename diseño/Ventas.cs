@@ -34,17 +34,22 @@ namespace diseño
             if (e.KeyChar==(char)Keys.Escape)
             {
                 Cobrar();
+                ActualizarStock();
                 sub = 0;
                 cant= 0;
                 AsignarPrecios();
-                limpiar();
+                limpiar();                
             }
-            else if ((int)e.KeyChar == (int)Keys.Enter)
-            {
-                
+            else if ((int)e.KeyChar == (int)Keys.Enter && txtProductos.Text != null)
+            {               
                 AgregarProductos(txtProductos.Text);
-                AsignarPrecios();
+                AsignarPrecios();                
             }
+        }
+
+        private void ActualizarStock()
+        {
+
         }
 
         private void limpiar()
@@ -56,121 +61,129 @@ namespace diseño
             dataTable = null;
         }
 
-        private void Cobrar()
-        {
-            try
+            private void Cobrar()
             {
-                conexion();
-                String consulta = "INSERT INTO Ventas(Total,Fecha) VALUES(" + total + ",'" + DateTime.Today + "')";
+                try
+                {
+                    conexion();
+                    String consulta = "INSERT INTO Ventas(Total,Fecha) VALUES(" + total + ",'" + DateTime.Today + "')";
+                    SqlCommand coman = new SqlCommand(consulta, conn);
+                    coman.ExecuteNonQuery();
 
-                SqlCommand coman = new SqlCommand(consulta, conn);
-                coman.ExecuteNonQuery();
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string nombreProducto = row["nombre"].ToString();
+                    int cantidadVendida = Convert.ToInt32(row["cantidad"]);
+
+                    String consultaProductos = "UPDATE Productos SET cantidad = cantidad - " + cantidadVendida + " WHERE nombre = '" + nombreProducto + "'";
+                    SqlCommand comanProductos = new SqlCommand(consultaProductos, conn);
+                    comanProductos.ExecuteNonQuery();
+                }
+
                 conn.Close();
-                MessageBox.Show("Venta realizada correctamente");
-                
-            }
-            catch(SqlException ex)
+                    MessageBox.Show("Venta realizada correctamente");                
+                }
+                catch(SqlException ex)
+                {
+                    MessageBox.Show("error" + ex);
+                }
+                }
+
+            private void AsignarPrecios()
             {
-                MessageBox.Show("error" + ex);
+                sub =sub+(cant * pre);
+                iva =(sub * .16);
+                total=(iva+sub);
+                lblIva.Text = iva.ToString();
+                lblSub.Text = sub.ToString();
+                lblTotal.Text = total.ToString();
             }
 
-            }
-
-        private void AsignarPrecios()
-        {
-            sub =sub+(cant * pre);
-            iva =(sub * .16);
-            total=(iva+sub);
-            lblIva.Text = iva.ToString();
-            lblSub.Text = sub.ToString();
-            lblTotal.Text = total.ToString();
-        }
-
-        private void dgvVentas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            DataGridViewRow fila = dgvVentas.Rows[e.RowIndex];
-            DataGridViewCell precioo = dgvVentas.Rows[e.RowIndex].Cells[1];
-            DataGridViewCell canti = dgvVentas.Rows[e.RowIndex].Cells[2];
-            MessageBox.Show(canti.Value.ToString());
-            sub -= Convert.ToInt32(precioo.Value)* Convert.ToInt32(canti.Value);
-            iva = (sub * .16);
-            total = (iva + sub);
-            lblIva.Text = iva.ToString();
-            lblSub.Text = sub.ToString();
-            lblTotal.Text = total.ToString();
-            dgvVentas.Rows.Remove(fila);
-        }
-
-        private void AgregarProductos(string text)
-        {
-            int idProducto;
-            int cantidad;
-            if (text.Contains("*"))
+            private void dgvVentas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
             {
-                String[] div = text.Split('*');
-                 idProducto = Convert.ToInt32(div[0]);
-                 cantidad = Convert.ToInt32(div[1]);            
+                DataGridViewRow fila = dgvVentas.Rows[e.RowIndex];
+                DataGridViewCell precioo = dgvVentas.Rows[e.RowIndex].Cells[1];
+                DataGridViewCell canti = dgvVentas.Rows[e.RowIndex].Cells[2];
+                MessageBox.Show(canti.Value.ToString());
+                sub -= Convert.ToInt32(precioo.Value)* Convert.ToInt32(canti.Value);
+                iva = (sub * .16);
+                total = (iva + sub);
+                lblIva.Text = iva.ToString();
+                lblSub.Text = sub.ToString();
+                lblTotal.Text = total.ToString();
+                dgvVentas.Rows.Remove(fila);
             }
-            else
-            {
-                 idProducto = Convert.ToInt32(text);
-                 cantidad = 1;
-            }
-            conexion();
-            String consulta = "SELECT nombre, precio FROM Productos WHERE idProducto=" + idProducto;
-            SqlDataAdapter adap = new SqlDataAdapter(consulta, conn);
-            DataTable productos = new DataTable();
-            adap.Fill(productos);
 
-            if (dataTable==null)
+            private void AgregarProductos(string text)
             {
-                dataTable = new DataTable();
+                int idProducto;
+                int cantidad;
+                if (text.Contains("*"))
+                {
+                    String[] div = text.Split('*');
+                     idProducto = Convert.ToInt32(div[0]);
+                     cantidad = Convert.ToInt32(div[1]);            
+                }
+                else
+                {
+                     idProducto = Convert.ToInt32(text);
+                     cantidad = 1;
+                }
+                conexion();
+                String consulta = "SELECT nombre, precio FROM Productos WHERE idProducto=" + idProducto;
+                SqlDataAdapter adap = new SqlDataAdapter(consulta, conn);
+                DataTable productos = new DataTable();
+                adap.Fill(productos);
+
+                if (dataTable==null)
+                {
+                    dataTable = new DataTable();
+                    dataTable.Columns.Add("nombre", typeof(string));
+                    dataTable.Columns.Add("precio", typeof(decimal));
+                    dataTable.Columns.Add("cantidad", typeof(int));
+
+                    dgvVentas.DataSource = dataTable;
+                }
+                // Agregar una nueva fila al DataTable con los datos del nuevo producto
+                DataRow row = dataTable.NewRow();
+                row["nombre"] = productos.Rows[0]["nombre"];
+                row["precio"] = productos.Rows[0]["precio"];
+                row["cantidad"] = cantidad;
+                dataTable.Rows.Add(row);
+
+                pre = Convert.ToDouble(productos.Rows[0]["precio"]);
+                cant = cantidad;
+
+                // Establecer el DataSource del DataGridView para que muestre todos los productos
+                dgvVentas.DataSource = dataTable;
+
+                // Cerrar la conexión a la base de datos
+                conn.Close();
+
+                txtProductos.Clear();
+
+            }
+
+            private void Ventas_Load(object sender, EventArgs e)
+            {
+                    dataTable = new DataTable();
                 dataTable.Columns.Add("nombre", typeof(string));
                 dataTable.Columns.Add("precio", typeof(decimal));
                 dataTable.Columns.Add("cantidad", typeof(int));
 
                 dgvVentas.DataSource = dataTable;
             }
-            // Agregar una nueva fila al DataTable con los datos del nuevo producto
-            DataRow row = dataTable.NewRow();
-            row["nombre"] = productos.Rows[0]["nombre"];
-            row["precio"] = productos.Rows[0]["precio"];
-            row["cantidad"] = cantidad;
-            dataTable.Rows.Add(row);
-
-            pre = Convert.ToDouble(productos.Rows[0]["precio"]);
-            cant = cantidad;
-
-            // Establecer el DataSource del DataGridView para que muestre todos los productos
-            dgvVentas.DataSource = dataTable;
-
-            // Cerrar la conexión a la base de datos
-            conn.Close();
-
-            txtProductos.Clear();
-
-        }
-
-        private void Ventas_Load(object sender, EventArgs e)
-        {
-                dataTable = new DataTable();
-            dataTable.Columns.Add("nombre", typeof(string));
-            dataTable.Columns.Add("precio", typeof(decimal));
-            dataTable.Columns.Add("cantidad", typeof(int));
-
-            dgvVentas.DataSource = dataTable;
-        }
-        public void conexion()
-        {
-            try
+            public void conexion()
             {
-                conn.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\luisi\\Downloads\\diseño\\diseño\\Database2.mdf;Integrated Security=True";
-                conn.Open();     
+                try
+                {
+                    conn.ConnectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\luisi\\Downloads\\diseño\\diseño\\Database2.mdf;Integrated Security=True";
+                    conn.Open();     
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("error" + ex);
+                };
             }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("error" + ex);
-            };
-        }
     }
 }
